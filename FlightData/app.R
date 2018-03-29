@@ -16,9 +16,12 @@ flights <- read_csv("flights.csv", col_types = cols(FL_DATE = col_date(format = 
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
-   
+  
+   # Background music
+    tags$audio(src = "song.mp3", type = "audio/mp3", autoplay = NA, controls = NA),
+  
    # Application title
-   titlePanel("Flight Data"),
+    titlePanel("Flight Data"),
    
    # Sidebar with a slider input for number of bins 
    sidebarLayout(
@@ -52,9 +55,10 @@ server <- function(input, output) {
          ylab("Percent of flight cancelled") + 
          scale_y_continuous(labels = scales::percent) +
          ggtitle("Percent of flights cancelled by carrier") +
-     scale_color_brewer()
-     #+
-       #scale_color_manual(values=aesthetic(name="crystalpepsi", n=3))
+         theme_bw() +
+         theme(panel.border = element_blank()) +
+         guides(fill = FALSE) +
+         scale_fill_manual(values=rep(aesthetic(name="crystalpepsi"), times=4)) 
      
      
    })
