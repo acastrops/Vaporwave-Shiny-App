@@ -26,7 +26,7 @@
 ui <- fluidPage(
   
    # Background music
-    tags$audio(src = "song.mp3", type = "audio/mp3", autoplay = NA, controls = NA),
+    tags$audio(src = "song.mp3", type = "audio/mp3", autoplay = FALSE, controls = NA),
   
    # Application title
     titlePanel("Flight Data"),
@@ -36,11 +36,13 @@ ui <- fluidPage(
       sidebarPanel(
          selectizeInput("Origin",
                      "Select your origin:", 
-                     unique(flights$ORIGIN)),
+                     sort(unique(flights$ORIGIN)),
+                     multiple = TRUE),
          
          selectizeInput("Destination",
                         "Select your destination:", 
-                        unique(flights$DEST))
+                        sort(unique(flights$DEST)),
+                        multiple = TRUE)
       ),
       
       # Show a plot of the generated distribution
@@ -51,12 +53,21 @@ ui <- fluidPage(
 )
 
 # Define server logic required to draw a histogram
-server <- function(input, output) {
+server <- function(input, output, session) {
 
+     update_destination_choices <- reactive(flights %>%
+                                              filter(flights$ORIGIN %in% input$Origin) %>%
+                                              group_by(DEST) %>%
+                                              summarize(count = n()))
+  
+     observe({updateSelectizeInput(session = session, 
+                                   inputId ="Destination", 
+                                   choices = sort(update_destination_choices()$DEST))})
+     
      output$flightPlot <- renderPlot({
      #Cancellation plot
       flights %>%
-      filter(flights$ORIGIN == "ATL") %>%
+      filter(flights$ORIGIN %in% input$Origin & flights$DEST %in% input$Destination) %>%
         group_by(UNIQUE_CARRIER) %>%
         #select(input$ORIGIN) %>%
         summarise(pct_cancelled = mean(CANCELLED)) %>%
