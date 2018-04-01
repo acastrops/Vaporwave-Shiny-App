@@ -8,9 +8,13 @@ install_load('shiny')
 install_load('readr')
 install_load('ggplot2')
 install_load('dplyr')
-install_load('devtools')
-devtools::install_github("mackenziedg/aesthetic")
-library('aesthetic')
+
+if (!require(aesthetic)) {
+  install_load('devtools')
+  devtools::install_github("mackenziedg/aesthetic")
+  library(aesthetic)
+}
+
 library(here)
 
 #Data
