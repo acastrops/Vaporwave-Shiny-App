@@ -68,14 +68,6 @@ server <- function(input, output, session) {
                                    choices = sort(update_destination_choices()$DEST),
                                    )})
      
-     # use filtered_flights_by_carrier() instead of 
-     # always copying/pasting the filtering in graphs
-     
-     filtered_flights_by_carrier <- reactive(flights %>%
-                                              filter(ORIGIN %in% input$Origin & 
-                                                     DEST %in% input$Destination) %>%
-                                              group_by(UNIQUE_CARRIER)
-                                            )
      
      # Create a single Vaporwave Theme
      vaporwave_theme <- theme_bw() +
@@ -85,6 +77,17 @@ server <- function(input, output, session) {
      vaporwave_theme <- list(vaporwave_theme, 
                              scale_fill_manual(values=rep(aesthetic(name="crystalpepsi"), times=4)),
                              guides(fill = FALSE))
+     
+     
+     # use filtered_flights_by_carrier() instead of 
+     # always copying/pasting the filtering in graphs
+     
+     filtered_flights_by_carrier <- reactive(flights %>%
+                                              filter(ORIGIN %in% input$Origin & 
+                                                     DEST %in% input$Destination) %>%
+                                              group_by(UNIQUE_CARRIER)
+                                            )
+    
      
      output$totalFlightsPlot <- renderPlot({
        filtered_flights_by_carrier() %>%
