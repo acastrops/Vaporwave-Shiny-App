@@ -108,7 +108,7 @@ server <- function(input, output, session) {
          summarise(num_flights = n()) %>%
          ggplot(aes(x = UNIQUE_CARRIER, y = num_flights)) +
          geom_bar(aes(fill = UNIQUE_CARRIER),stat = "identity") + 
-         xlab("Carriers") +
+         xlab("Carrier") +
          ylab("Number of scheduled flights") + 
          ggtitle("ＴＯＴＡＬ　ＦＬＩＧＨＴＳ　流畝ンど") +
          vaporwave_theme 
@@ -119,10 +119,10 @@ server <- function(input, output, session) {
         summarise(pct_cancelled = mean(CANCELLED)) %>%
         ggplot(aes(x = UNIQUE_CARRIER, y = pct_cancelled)) +
          geom_bar(aes(fill = UNIQUE_CARRIER),stat = "identity") + 
-         xlab("Carriers") +
+         xlab("Carrier") +
          ylab("Percent of flights cancelled") + 
          scale_y_continuous(labels = scales::percent) +
-         ggtitle("ＣＡＮＣＥＬＬＥＤ　ＦＬＩＧＨＴＳ　者ニど") +
+         ggtitle("ＣＡＮＣＥＬＬＥＤ　ＦＬＩＧＨＴＳ") +
          vaporwave_theme 
    })
 }
