@@ -1,31 +1,30 @@
-#
 # This is a vaporwaveTM Shiny web application for visualizing flight
 # data time series. 
 #
 
-
 #Packages
-  library(shiny)
-  library(readr)
-  library(ggplot2)
-  library(dplyr)
-  library(aesthetic)
+library(install.load)
+install_load('shiny')
+install_load('readr')
+install_load('ggplot2')
+install_load('dplyr')
+install_load('devtools')
+devtools::install_github("mackenziedg/aesthetic")
+library('aesthetic')
 
 #Data
-  #flights <- read_csv("flights.csv", col_types = cols(FL_DATE = col_date(format = "%Y-%m-%d")))
-  flights <- read_rds("flights.tbl") # Loading a serialized, compressed version of the dataset
-  
-  
+#flights <- read_csv("flights.csv", col_types = cols(FL_DATE = col_date(format = "%Y-%m-%d")))
+flights <- read_rds("flights.tbl") # Loading a serialized, compressed version of the dataset
+
 # Define UI for application that makes the graphs
 ui <- fluidPage(
   
-   # External style sheets 
+  # External style sheets 
   includeCSS("www/bootstrap.min.css"),
   includeCSS("www/aesthetic.css"),
   
-  
-   # Application title
-    titlePanel("ＦＬＩＧＨＴ　ＤＡＴＡ　遅延便"),
+  # Application title
+  titlePanel("ＦＬＩＧＨＴ　ＤＡＴＡ　遅延便"),
    
   fluidRow(
     column(width = 6,
@@ -130,4 +129,3 @@ server <- function(input, output, session) {
 
 # Run the application 
 shinyApp(ui = ui, server = server)
-
