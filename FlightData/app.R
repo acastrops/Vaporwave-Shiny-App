@@ -12,18 +12,15 @@
   library(aesthetic)
 
 #Data
-  flights <- read_csv("flights.csv", col_types = cols(FL_DATE = col_date(format = "%Y-%m-%d")))
-  
-  #Defining columns we will be using
-    # carriers <- factor(flights$UNIQUE_CARRIER)
-    # year <- as.Date(as.character(flights$FL_DATE), format="%Y-%m-%d")
-    # ddelay <- 
-    # adelay <- 
-    # cancelled <- 
+  #flights <- read_csv("flights.csv", col_types = cols(FL_DATE = col_date(format = "%Y-%m-%d")))
+  flights <- read_rds("flights.tbl") # Loading a serialized, compressed version of the dataset
   
   
 # Define UI for application that makes the graphs
 ui <- fluidPage(
+  
+   # External style sheets 
+  theme = "bootstrap.min.css",
   
    # Background music
     tags$audio(src = "song.mp3", type = "audio/mp3", autoplay = FALSE, controls = NA),
