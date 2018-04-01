@@ -15,7 +15,6 @@
   #flights <- read_csv("flights.csv", col_types = cols(FL_DATE = col_date(format = "%Y-%m-%d")))
   flights <- read_rds("flights.tbl") # Loading a serialized, compressed version of the dataset
   
-  
 # Define UI for application that makes the graphs
 ui <- fluidPage(
   
