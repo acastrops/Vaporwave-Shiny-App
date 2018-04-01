@@ -64,12 +64,18 @@ server <- function(input, output, session) {
                                    inputId ="Destination", 
                                    choices = sort(update_destination_choices()$DEST))})
      
-     output$flightPlot <- renderPlot({
-     #Cancellation plot
-      flights %>%
-      filter(flights$ORIGIN %in% input$Origin & flights$DEST %in% input$Destination) %>%
-        group_by(UNIQUE_CARRIER) %>%
-        #select(input$ORIGIN) %>%
+     # use filtered_flights_by_carrier() instead of 
+     # always copying/pasting the filtering in graphs
+     
+     filtered_flights_by_carrier<- reactive(flights %>%
+                                              filter(ORIGIN %in% input$Origin & 
+                                                     DEST %in% input$Destination) %>%
+                                              group_by(UNIQUE_CARRIER)
+                                            )
+     
+     
+     output$flightPlot <- renderPlot({ #Cancellation plot
+        filtered_flights_by_carrier() %>%
         summarise(pct_cancelled = mean(CANCELLED)) %>%
         ggplot(aes(x = UNIQUE_CARRIER, y = pct_cancelled)) +
          geom_bar(aes(fill = UNIQUE_CARRIER),stat = "identity") + 
