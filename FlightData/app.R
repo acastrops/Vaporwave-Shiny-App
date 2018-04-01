@@ -20,35 +20,37 @@
 ui <- fluidPage(
   
    # External style sheets 
-  theme = "bootstrap.min.css",
+  includeCSS("www/bootstrap.min.css"),
+  includeCSS("www/aesthetic.css"),
   
-   # Background music
-    tags$audio(src = "song.mp3", type = "audio/mp3", autoplay = FALSE, controls = NA),
   
    # Application title
-    titlePanel("Flight Data"),
+    titlePanel("ＦＬＩＧＨＴ　ＤＡＴＡ　遅延便"),
    
-   # Sidebar with a dropdown to select input
-   sidebarLayout(
-      sidebarPanel(
-         selectizeInput("Origin",
-                     "Select your origin:", 
-                     sort(unique(flights$ORIGIN)),
-                     multiple = TRUE,
-                     selected = c("MIA")),
-         
-         selectizeInput("Destination",
-                        "Select your destination:", 
-                        NA,
-                        multiple = TRUE)
-      ),
-      
-      # Show a plot of the generated distribution
-      mainPanel(
-         plotOutput("totalFlightsPlot"),
-         plotOutput("cancelledPlot")
-      )
+  fluidRow(
+    column(width = 6,
+    selectizeInput("Origin",
+                   "Select your origin:", 
+                   sort(unique(flights$ORIGIN)),
+                   multiple = TRUE,
+                   selected = c("MIA", "FLL"))),
+    
+    column(width = 6,
+      selectizeInput("Destination",
+                   "Select your destination:", 
+                   NA,
+                   multiple = TRUE))
+  ),
+  fluidRow(
+    column(width = 6, 
+   plotOutput("totalFlightsPlot")),
+   column(width = 6,
+   plotOutput("cancelledPlot")
    )
+  ),
+  
+  # Background music
+  tags$audio(src = "song.mp3", type = "audio/mp3", autoplay = FALSE, controls = NA)
 )
 
 # Define server logic required to draw a histogram
@@ -63,12 +65,28 @@ server <- function(input, output, session) {
      observe({updateSelectizeInput(session = session, 
                                    inputId ="Destination", 
                                    choices = sort(update_destination_choices()$DEST),
+                                   selected = {
+                                     if(is.null(input$Destination)){
+                                       update_destination_choices()$DEST[1]
+                                     } else {
+                                       input$Destination
+                                     }
+                                   }
                                    )})
      
      
      # Create a single Vaporwave Theme
-     vaporwave_theme <- theme_bw() +
-       theme(panel.border = element_blank())
+     vaporwave_theme <- theme_bw() + 
+       theme(text = element_text(color = "white",
+                                 family = "Helvetica"),
+             line = element_line(color = "white"),
+             rect = element_rect(fill="white"),
+             axis.text = element_text(color = "white"),
+             plot.background = element_rect(fill = "black"),
+             panel.background = element_rect(fill = "black"),
+             panel.border = element_blank(),
+             
+             title = element_text(family = "Times", size = 18))
      
      # If you get "RHS" errors, add the command to the list like this one
      vaporwave_theme <- list(vaporwave_theme, 
@@ -93,7 +111,7 @@ server <- function(input, output, session) {
          geom_bar(aes(fill = UNIQUE_CARRIER),stat = "identity") + 
          xlab("Carriers") +
          ylab("Number of scheduled flights") + 
-         ggtitle("Number of total flights by carrier, 2017") +
+         ggtitle("ＴＯＴＡＬ　ＦＬＩＧＨＴＳ　流畝ンど") +
          vaporwave_theme 
      })
      
@@ -103,9 +121,9 @@ server <- function(input, output, session) {
         ggplot(aes(x = UNIQUE_CARRIER, y = pct_cancelled)) +
          geom_bar(aes(fill = UNIQUE_CARRIER),stat = "identity") + 
          xlab("Carriers") +
-         ylab("Percent of flight cancelled") + 
+         ylab("Percent of flights cancelled") + 
          scale_y_continuous(labels = scales::percent) +
-         ggtitle("Percent of flights cancelled by carrier") +
+         ggtitle("ＣＡＮＣＥＬＬＥＤ　ＦＬＩＧＨＴＳ　者ニど") +
          vaporwave_theme 
    })
 }
