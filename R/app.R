@@ -14,7 +14,7 @@ library('aesthetic')
 
 #Data
 #flights <- read_csv("flights.csv", col_types = cols(FL_DATE = col_date(format = "%Y-%m-%d")))
-flights <- read_rds("flights.tbl") # Loading a serialized, compressed version of the dataset
+flights <- read_rds("data/flights.tbl") # Loading a serialized, compressed version of the dataset
 
 # Define UI for application that makes the graphs
 ui <- fluidPage(
@@ -46,6 +46,13 @@ ui <- fluidPage(
    column(width = 6,
    plotOutput("cancelledPlot")
    )
+  ),
+  fluidRow(
+    column(width = 6, 
+           plotOutput("totalFlightsTSPlot")),
+    column(width = 6,
+           plotOutput("cancelledTSPlot")
+    )
   ),
   
   # Background music
@@ -90,17 +97,22 @@ server <- function(input, output, session) {
      # If you get "RHS" errors, add the command to the list like this one
      vaporwave_theme <- list(vaporwave_theme, 
                              scale_fill_manual(values=rep(aesthetic(name="jazzcup"), times=4)),
+                             #scale_color_manual(values=rep(aesthetic(name="jazzcup"), times=4)),
                              guides(fill = FALSE))
      
      
-     # use filtered_flights_by_carrier() instead of 
+     # use reactive functions instead of 
      # always copying/pasting the filtering in graphs
-     
      filtered_flights_by_carrier <- reactive(flights %>%
                                               filter(ORIGIN %in% input$Origin & 
                                                      DEST %in% input$Destination) %>%
                                               group_by(UNIQUE_CARRIER)
                                             )
+     filtered_flights_by_carrier_date <- reactive(flights %>%
+                                               filter(ORIGIN %in% input$Origin & 
+                                                        DEST %in% input$Destination) %>%
+                                               group_by(FL_DATE, UNIQUE_CARRIER)
+                                                  )
     
      
      output$totalFlightsPlot <- renderPlot({
@@ -108,10 +120,19 @@ server <- function(input, output, session) {
          summarise(num_flights = n()) %>%
          ggplot(aes(x = UNIQUE_CARRIER, y = num_flights)) +
          geom_bar(aes(fill = UNIQUE_CARRIER),stat = "identity") + 
-         xlab("Carrier") +
-         ylab("Number of scheduled flights") + 
-         ggtitle("ＴＯＴＡＬ　ＦＬＩＧＨＴＳ　流畝ンど") +
+         labs(title="ＴＯＴＡＬ　ＦＬＩＧＨＴＳ　流畝ンど",
+              x="Carrier", y="Number of scheduled flights") +
          vaporwave_theme 
+     })
+     
+     output$totalFlightsTSPlot <- renderPlot({
+       filtered_flights_by_carrier_date() %>%
+         summarise(num_flights = n()) %>%
+         ggplot(aes(x = FL_DATE, y = num_flights, group=UNIQUE_CARRIER, color=UNIQUE_CARRIER)) +
+         geom_line() + 
+         labs(title="ＴＯＴＡＬ　ＦＬＩＧＨＴＳ　流畝ンど",
+              x='', y="Number of scheduled flights") +
+         vaporwave_theme
      })
      
      output$cancelledPlot <- renderPlot({ #Cancellation plot
@@ -119,12 +140,22 @@ server <- function(input, output, session) {
         summarise(pct_cancelled = mean(CANCELLED)) %>%
         ggplot(aes(x = UNIQUE_CARRIER, y = pct_cancelled)) +
          geom_bar(aes(fill = UNIQUE_CARRIER),stat = "identity") + 
-         xlab("Carrier") +
-         ylab("Percent of flights cancelled") + 
+         labs(title="ＣＡＮＣＥＬＬＥＤ　ＦＬＩＧＨＴＳ",
+              x="Carrier", y="Percent of flights cancelled") +
          scale_y_continuous(labels = scales::percent) +
-         ggtitle("ＣＡＮＣＥＬＬＥＤ　ＦＬＩＧＨＴＳ") +
          vaporwave_theme 
    })
+     
+     # output$cancelledTSPlot <- renderPlot({ #Cancellation plot
+     #   filtered_flights_by_carrier() %>%
+     #     summarise(pct_cancelled = mean(CANCELLED)) %>%
+     #     ggplot(aes(x = UNIQUE_CARRIER, y = pct_cancelled)) +
+     #     geom_bar(aes(fill = UNIQUE_CARRIER),stat = "identity") + 
+     #     labs(title="ＣＡＮＣＥＬＬＥＤ　ＦＬＩＧＨＴＳ",
+     #          x="Carrier", y="Percent of flights cancelled") +
+     #     scale_y_continuous(labels = scales::percent) +
+     #     vaporwave_theme 
+     # })
 }
 
 # Run the application 
