@@ -65,7 +65,7 @@ server <- function(input, output, session) {
   
      observe({updateSelectizeInput(session = session, 
                                    inputId ="Destination", 
-                                   choices = sort(update_destination_choices()$DEST),
+                                   choices = sort(update_destination_choices()$DEST)
                                    )})
      
      
@@ -75,7 +75,7 @@ server <- function(input, output, session) {
      
      # If you get "RHS" errors, add the command to the list like this one
      vaporwave_theme <- list(vaporwave_theme, 
-                             scale_fill_manual(values=rep(aesthetic(name="crystalpepsi"), times=4)),
+                             scale_fill_manual(values=rep(aesthetic(name="jazzcup"), times=4)),
                              guides(fill = FALSE))
      
      
