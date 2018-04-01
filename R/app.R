@@ -11,17 +11,19 @@ install_load('dplyr')
 install_load('devtools')
 devtools::install_github("mackenziedg/aesthetic")
 library('aesthetic')
+library(here)
 
 #Data
 #flights <- read_csv("flights.csv", col_types = cols(FL_DATE = col_date(format = "%Y-%m-%d")))
-flights <- read_rds("data/flights.tbl") # Loading a serialized, compressed version of the dataset
+flights.path <- here("data", "flights.tbl")
+flights <- read_rds(flights.path) # Loading a serialized, compressed version of the dataset
 
 # Define UI for application that makes the graphs
 ui <- fluidPage(
   
   # External style sheets 
-  includeCSS("www/bootstrap.min.css"),
-  includeCSS("www/aesthetic.css"),
+  includeCSS(here("www", "bootstrap.min.css")),
+  includeCSS(here("www", "aesthetic.css")),
   
   # Application title
   titlePanel("ＦＬＩＧＨＴ　ＤＡＴＡ　遅延便"),
