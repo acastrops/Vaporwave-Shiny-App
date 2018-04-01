@@ -1,20 +1,28 @@
 #
-# This is a Shiny web application. You can run the application by clicking
-# the 'Run App' button above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
+# This is a vaporwaveTM Shiny web application for visualizing flight
+# data time series. 
 #
 
-library(shiny)
-library(readr)
-library(ggplot2)
-library(dplyr)
-library(aesthetic)
-flights <- read_csv("flights.csv", col_types = cols(FL_DATE = col_date(format = "%Y-%m-%d")))
 
-# Define UI for application that draws a histogram
+#Packages
+  library(shiny)
+  library(readr)
+  library(ggplot2)
+  library(dplyr)
+  library(aesthetic)
+
+#Data
+  flights <- read_csv("flights.csv", col_types = cols(FL_DATE = col_date(format = "%Y-%m-%d")))
+  
+  #Defining columns we will be using
+    # carriers <- factor(flights$UNIQUE_CARRIER)
+    # year <- as.Date(as.character(flights$FL_DATE), format="%Y-%m-%d")
+    # ddelay <- 
+    # adelay <- 
+    # cancelled <- 
+  
+  
+# Define UI for application that makes the graphs
 ui <- fluidPage(
   
    # Background music
@@ -23,31 +31,34 @@ ui <- fluidPage(
    # Application title
     titlePanel("Flight Data"),
    
-   # Sidebar with a slider input for number of bins 
+   # Sidebar with a dropdown to select input
    sidebarLayout(
       sidebarPanel(
          selectizeInput("Origin",
-                     "Select your origin:", unique(flights$ORIGIN)),
+                     "Select your origin:", 
+                     unique(flights$ORIGIN)),
          
          selectizeInput("Destination",
-                        "Select your destination:", unique(flights$DEST))
+                        "Select your destination:", 
+                        unique(flights$DEST))
       ),
       
       # Show a plot of the generated distribution
       mainPanel(
-         plotOutput("distPlot")
+         plotOutput("flightPlot")
       )
    )
 )
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
-   
-   output$distPlot <- renderPlot({
-     
+
+     output$flightPlot <- renderPlot({
      #Cancellation plot
       flights %>%
+      filter(flights$ORIGIN == "ATL") %>%
         group_by(UNIQUE_CARRIER) %>%
+        #select(input$ORIGIN) %>%
         summarise(pct_cancelled = mean(CANCELLED)) %>%
         ggplot(aes(x = UNIQUE_CARRIER, y = pct_cancelled)) +
          geom_bar(aes(fill = UNIQUE_CARRIER),stat = "identity") + 
