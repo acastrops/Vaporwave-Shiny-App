@@ -35,7 +35,7 @@ label {
 
 body {
   background-color: #01cdfe;
-  background-color: linear-gradient(#02d4fa, #FA02D4);
+  background: linear-gradient(#02d4fa, #FA02D4);
   color: black;
 }
 
@@ -53,8 +53,8 @@ h2 {
 
 .selectize-control.multi .selectize-input > div {
   text-transform: uppercase;
-  background: #b51ccc;
-  color: white;
+  background: #FA02D4;
+  color: black;
 }
 
 

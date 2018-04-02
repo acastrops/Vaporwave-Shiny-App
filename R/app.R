@@ -35,13 +35,13 @@ ui <- fluidPage(
    
   fluidRow(class = "inputs",
     selectizeInput("Origin",
-                   "Origin Airports:", 
+                   "Origin Airports 終夜の地平線:", 
                    sort(unique(flights$ORIGIN)),
                    multiple = TRUE,
                    selected = c("MIA", "FLL")),
     
     selectizeInput("Destination",
-                   "Destination Airports:", 
+                   "Destination Airports 久遠:", 
                    NA,
                    multiple = TRUE)
   ),
