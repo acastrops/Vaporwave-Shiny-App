@@ -24,21 +24,20 @@ ui <- fluidPage(
   
   
    # Application title
-    titlePanel("ＦＬＩＧＨＴ　ＤＡＴＡ　遅延便"),
+    titlePanel("Flight Data"),
+    title = "ＦＬＩＧＨＴ　ＤＡＴＡ　遅延便",
    
-  fluidRow(
-    column(width = 6,
+  fluidRow(class = "inputs",
     selectizeInput("Origin",
-                   "Select your origin:", 
+                   "Origin Airports:", 
                    sort(unique(flights$ORIGIN)),
                    multiple = TRUE,
-                   selected = c("MIA", "FLL"))),
+                   selected = c("MIA", "FLL")),
     
-    column(width = 6,
-      selectizeInput("Destination",
-                   "Select your destination:", 
+    selectizeInput("Destination",
+                   "Destination Airports:", 
                    NA,
-                   multiple = TRUE))
+                   multiple = TRUE)
   ),
   fluidRow(
     column(width = 6, 
@@ -77,7 +76,7 @@ server <- function(input, output, session) {
      # Create a single Vaporwave Theme
      vaporwave_theme <- theme_bw() + 
        theme(text = element_text(color = "white",
-                                 family = "Helvetica"),
+                                 family = "Times"),
              line = element_line(color = "white"),
              rect = element_rect(fill="white"),
              axis.text = element_text(color = "white"),
