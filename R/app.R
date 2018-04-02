@@ -58,6 +58,14 @@ ui <- fluidPage(
            plotOutput("cancelledTSPlot")
     )
   ),
+  fluidRow(
+    column(width = 6, 
+           plotOutput("averageDepDelayPlot")),
+    column(width = 6,
+           plotOutput("averageArrDelayPlot")
+    )
+  ),
+  
   
   # Background music
   tags$audio(src = "song.mp3", type = "audio/mp3", autoplay = FALSE, controls = NA)
@@ -89,7 +97,6 @@ server <- function(input, output, session) {
      vaporwave_theme <- theme_bw() + 
        theme(text = element_text(color = "white",
                                  family = "Helvetica"),
-             line = element_line(color = "white"),
              rect = element_rect(fill="white"),
              axis.text = element_text(color = "white"),
              plot.background = element_rect(fill = "black"),
@@ -160,6 +167,30 @@ server <- function(input, output, session) {
          scale_y_continuous(labels = scales::percent) +
          vaporwave_theme
      })
+
+     output$averageDepDelayPlot <- renderPlot({
+       filtered_flights_by_carrier() %>% 
+         summarize(avg_delay = mean(DEP_DELAY,na.rm = TRUE)) %>% 
+         arrange(desc(avg_delay)) %>% 
+         ggplot(aes(x = UNIQUE_CARRIER, y = avg_delay)) +
+             geom_bar(aes(fill = UNIQUE_CARRIER),stat = "identity") +
+             labs(title="AVERAGE DEPARTURE DELAY",
+                  x="Carrier", y="Average delay (minutes") +
+             vaporwave_theme
+
+     })
+
+      output$averageArrDelayPlot <- renderPlot({
+        filtered_flights_by_carrier() %>% 
+          summarize(avg_delay = mean(ARR_DELAY,na.rm = TRUE)) %>% 
+          arrange(desc(avg_delay)) %>% 
+          ggplot(aes(x = UNIQUE_CARRIER, y = avg_delay)) +
+          geom_bar(aes(fill = UNIQUE_CARRIER),stat = "identity") +
+          labs(title="AVERAGE ARRIVAL DELAY",
+               x="Carrier", y="Average delay (minutes)") +
+          vaporwave_theme
+      })
+     
 }
 
 # Run the application 
