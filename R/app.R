@@ -17,15 +17,17 @@ if (!require(aesthetic)) {
 
 #Data
 #flights <- read_csv("flights.csv", col_types = cols(FL_DATE = col_date(format = "%Y-%m-%d")))
+print("Loading data...")
 flights.path <- here("data", "flights.tbl")
 flights <- read_rds(flights.path) # Loading a serialized, compressed version of the dataset
+print("Flight data loaded.")
 
 # Define UI for application that makes the graphs
 ui <- fluidPage(
   
   # External style sheets 
-  includeCSS(here("www", "bootstrap.min.css")),
-  includeCSS(here("www", "aesthetic.css")),
+  includeCSS("www/bootstrap.min.css"),
+  includeCSS("www/aesthetic.css"),
   
    # Application title
     titlePanel("Flight Data"),

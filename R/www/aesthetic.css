@@ -10,7 +10,7 @@ src: local('VCR OSD Mono'), url('VCR_OSD_MONO.woff') format('woff');
 }
 
 body {
-  font-family: Times, serif;
+  font-family: monospace;
 }
 
 h2 {
@@ -22,7 +22,7 @@ h2 {
 
 label {
   font-weight: normal;
-  font-size: medium;
+  font-size: x-large;
 }
 
 /* You gotta *really* be specific here to get the browser to listen to you*/
@@ -35,6 +35,7 @@ label {
 
 body {
   background-color: #01cdfe;
+  background-color: linear-gradient(#02d4fa, #FA02D4);
   color: black;
 }
 
