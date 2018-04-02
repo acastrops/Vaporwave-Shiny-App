@@ -1,0 +1,69 @@
+
+
+/******* FONTS *******/
+
+@font-face {
+font-family: 'VCR OSD Mono';
+font-style: normal;
+font-weight: normal;
+src: local('VCR OSD Mono'), url('VCR_OSD_MONO.woff') format('woff');
+}
+
+body {
+  font-family: monospace;
+}
+
+h2 {
+  font-family: "VCR OSD Mono", Times, serif;
+  text-transform: uppercase;
+  font-size: 10vmax;
+  text-shadow: -0.0625rem -0.0625rem 0 #6BFFFF, 0.0625rem 0.0625rem 0 #FF819E;
+}
+
+label {
+  font-weight: normal;
+  font-size: x-large;
+}
+
+/* You gotta *really* be specific here to get the browser to listen to you*/
+.selectize-control.multi .selectize-input > div {
+  text-transform: uppercase;
+}
+
+
+/******* COLORS *******/
+
+body {
+  background-color: #01cdfe;
+  background: linear-gradient(#02d4fa, #FA02D4);
+  color: black;
+}
+
+.control-label {
+  color: black;
+}
+
+h2 {
+  color: black;
+}
+
+.selectize-input {
+  background-color: black;
+}
+
+.selectize-control.multi .selectize-input > div {
+  text-transform: uppercase;
+  background: #FA02D4;
+  color: black;
+}
+
+
+/******* SPACING *******/
+
+.form-group {
+  margin: 0 10px;
+  float: left;
+}
+.row {
+  margin-bottom: 10px;
+}

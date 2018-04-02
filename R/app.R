@@ -17,32 +17,33 @@ if (!require(aesthetic)) {
 
 #Data
 #flights <- read_csv("flights.csv", col_types = cols(FL_DATE = col_date(format = "%Y-%m-%d")))
+print("Loading data...")
 flights.path <- here("data", "flights.tbl")
 flights <- read_rds(flights.path) # Loading a serialized, compressed version of the dataset
+print("Flight data loaded.")
 
 # Define UI for application that makes the graphs
 ui <- fluidPage(
   
   # External style sheets 
-  includeCSS(here("www", "bootstrap.min.css")),
-  includeCSS(here("www", "aesthetic.css")),
+  includeCSS("www/bootstrap.min.css"),
+  includeCSS("www/aesthetic.css"),
   
-  # Application title
-  titlePanel("ＦＬＩＧＨＴ　ＤＡＴＡ　遅延便"),
+   # Application title
+    titlePanel("Flight Data"),
+    title = "ＦＬＩＧＨＴ　ＤＡＴＡ　遅延便",
    
-  fluidRow(
-    column(width = 6,
+  fluidRow(class = "inputs",
     selectizeInput("Origin",
-                   "Select your origin:", 
+                   "Origin Airports 終夜の地平線:", 
                    sort(unique(flights$ORIGIN)),
                    multiple = TRUE,
-                   selected = c("MIA", "FLL"))),
+                   selected = c("MIA", "FLL")),
     
-    column(width = 6,
-      selectizeInput("Destination",
-                   "Select your destination:", 
+    selectizeInput("Destination",
+                   "Destination Airports 久遠:", 
                    NA,
-                   multiple = TRUE))
+                   multiple = TRUE)
   ),
   fluidRow(
     column(width = 6, 
@@ -96,9 +97,11 @@ server <- function(input, output, session) {
      # Create a single Vaporwave Theme
      vaporwave_theme <- theme_bw() + 
        theme(text = element_text(color = "white",
-                                 family = "Helvetica"),
+                                 family = "Times"),
+             line = element_line(color = "white"),
              rect = element_rect(fill="white"),
              axis.text = element_text(color = "white"),
+             legend.background = element_rect(fill = "black"),
              plot.background = element_rect(fill = "black"),
              panel.background = element_rect(fill = "black"),
              panel.border = element_blank(),
