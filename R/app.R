@@ -174,7 +174,7 @@ server <- function(input, output, session) {
          arrange(desc(avg_delay)) %>% 
          ggplot(aes(x = UNIQUE_CARRIER, y = avg_delay)) +
              geom_bar(aes(fill = UNIQUE_CARRIER),stat = "identity") +
-             labs(title="AVERAGE DEPARTURE DELAY",
+             labs(title="ＡＶＥＲＡＧＥ　ＤＥＰＡＲＴＵＲＥ　ＤＥＬＡＹ　憶ゖ゛",
                   x="Carrier", y="Average delay (minutes") +
              vaporwave_theme
 
@@ -186,7 +186,7 @@ server <- function(input, output, session) {
           arrange(desc(avg_delay)) %>% 
           ggplot(aes(x = UNIQUE_CARRIER, y = avg_delay)) +
           geom_bar(aes(fill = UNIQUE_CARRIER),stat = "identity") +
-          labs(title="AVERAGE ARRIVAL DELAY",
+          labs(title="ＡＶＥＲＡＧＥ　ＡＲＲＩＶＡＬ　ＤＥＬＡＹ　亜ピ逸",
                x="Carrier", y="Average delay (minutes)") +
           vaporwave_theme
       })
