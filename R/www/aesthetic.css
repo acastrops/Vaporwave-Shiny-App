@@ -22,7 +22,7 @@ h2 {
 
 label {
   font-weight: normal;
-  font-size: x-large;
+  font-size: 1.75vw;
 }
 
 /* You gotta *really* be specific here to get the browser to listen to you*/
@@ -48,21 +48,25 @@ h2 {
 }
 
 .selectize-input {
-  background-color: black;
+  background-color: white;
 }
 
 .selectize-control.multi .selectize-input > div {
   text-transform: uppercase;
-  background: #FA02D4;
+  background: #fac6f2;
   color: black;
 }
 
 
 /******* SPACING *******/
 
+.selectize-input {
+  padding-left: 10px;
+}
+
 .form-group {
-  margin: 0 10px;
   float: left;
+  padding: 0 10px;
 }
 .row {
   margin-bottom: 10px;
