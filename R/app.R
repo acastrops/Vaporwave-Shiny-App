@@ -5,17 +5,15 @@
 #Packages
 library(install.load)
 install_load('shiny')
-install_load('readr')
-install_load('ggplot2')
-install_load('dplyr')
-
+install_load('tidyverse')
+install_load('here')
 if (!require(aesthetic)) {
   install_load('devtools')
   devtools::install_github("mackenziedg/aesthetic")
   library(aesthetic)
 }
 
-library(here)
+
 
 #Data
 #flights <- read_csv("flights.csv", col_types = cols(FL_DATE = col_date(format = "%Y-%m-%d")))
@@ -136,7 +134,7 @@ server <- function(input, output, session) {
          summarise(num_flights = n()) %>%
          ggplot(aes(x = FL_DATE, y = num_flights, group=UNIQUE_CARRIER, color=UNIQUE_CARRIER)) +
          geom_line() + 
-         labs(title="ＴＯＴＡＬ　ＦＬＩＧＨＴＳ　流畝ンど",
+         labs(title='',
               x='', y="Number of scheduled flights") +
          vaporwave_theme
      })
@@ -152,16 +150,16 @@ server <- function(input, output, session) {
          vaporwave_theme 
    })
      
-     # output$cancelledTSPlot <- renderPlot({ #Cancellation plot
-     #   filtered_flights_by_carrier() %>%
-     #     summarise(pct_cancelled = mean(CANCELLED)) %>%
-     #     ggplot(aes(x = UNIQUE_CARRIER, y = pct_cancelled)) +
-     #     geom_bar(aes(fill = UNIQUE_CARRIER),stat = "identity") + 
-     #     labs(title="ＣＡＮＣＥＬＬＥＤ　ＦＬＩＧＨＴＳ",
-     #          x="Carrier", y="Percent of flights cancelled") +
-     #     scale_y_continuous(labels = scales::percent) +
-     #     vaporwave_theme 
-     # })
+     output$cancelledTSPlot <- renderPlot({ #Cancellation plot
+       filtered_flights_by_carrier_date() %>%
+         summarise(pct_cancelled = mean(CANCELLED)) %>%
+         ggplot(aes(x = FL_DATE, y = pct_cancelled, group=UNIQUE_CARRIER, color=UNIQUE_CARRIER)) +
+         geom_line() +
+         labs(title='',
+              x='', y="Percent of flights cancelled") +
+         scale_y_continuous(labels = scales::percent) +
+         vaporwave_theme
+     })
 }
 
 # Run the application 
