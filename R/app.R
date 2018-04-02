@@ -99,6 +99,7 @@ server <- function(input, output, session) {
              line = element_line(color = "white"),
              rect = element_rect(fill="white"),
              axis.text = element_text(color = "white"),
+             legend.background = element_rect(fill = "black"),
              plot.background = element_rect(fill = "black"),
              panel.background = element_rect(fill = "black"),
              panel.border = element_blank(),
