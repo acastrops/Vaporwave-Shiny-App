@@ -22,6 +22,9 @@ flights.path <- here("data", "flights.tbl")
 flights <- read_rds(flights.path) # Loading a serialized, compressed version of the dataset
 print("Flight data loaded.")
 
+# Add week column to flights data frame
+flights$WEEK <- format(flights$FL_DATE, format = "%W")
+
 # Define UI for application that makes the graphs
 ui <- fluidPage(
   
@@ -125,7 +128,7 @@ server <- function(input, output, session) {
      filtered_flights_by_carrier_date <- reactive(flights %>%
                                                filter(ORIGIN %in% input$Origin & 
                                                         DEST %in% input$Destination) %>%
-                                               group_by(FL_DATE, UNIQUE_CARRIER)
+                                               group_by(WEEK, UNIQUE_CARRIER)
                                                   )
     
      
@@ -142,10 +145,10 @@ server <- function(input, output, session) {
      output$totalFlightsTSPlot <- renderPlot({
        filtered_flights_by_carrier_date() %>%
          summarise(num_flights = n()) %>%
-         ggplot(aes(x = FL_DATE, y = num_flights, group=UNIQUE_CARRIER, color=UNIQUE_CARRIER)) +
+         ggplot(aes(x = WEEK, y = num_flights, group=UNIQUE_CARRIER, color=UNIQUE_CARRIER)) +
          geom_line() + 
          labs(title='',
-              x='', y="Number of scheduled flights") +
+              x='Week', y="Number of scheduled flights") +
          vaporwave_theme
      })
      
@@ -163,10 +166,10 @@ server <- function(input, output, session) {
      output$cancelledTSPlot <- renderPlot({ #Cancellation plot
        filtered_flights_by_carrier_date() %>%
          summarise(pct_cancelled = mean(CANCELLED)) %>%
-         ggplot(aes(x = FL_DATE, y = pct_cancelled, group=UNIQUE_CARRIER, color=UNIQUE_CARRIER)) +
+         ggplot(aes(x = WEEK, y = pct_cancelled, group=UNIQUE_CARRIER, color=UNIQUE_CARRIER)) +
          geom_line() +
          labs(title='',
-              x='', y="Percent of flights cancelled") +
+              x='Week', y="Percent of flights cancelled") +
          scale_y_continuous(labels = scales::percent) +
          vaporwave_theme
      })
