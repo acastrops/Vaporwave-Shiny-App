@@ -14,16 +14,14 @@ if (!require(aesthetic)) {
 }
 
 
-
 #Data
-#flights <- read_csv("flights.csv", col_types = cols(FL_DATE = col_date(format = "%Y-%m-%d")))
 print("Loading data...")
 flights.path <- here("data", "flights.tbl")
 flights <- read_rds(flights.path) # Loading a serialized, compressed version of the dataset
 print("Flight data loaded.")
 
 # Add week column to flights data frame
-flights$WEEK <- format(flights$FL_DATE, format = "%W")
+flights$WEEK <- lubridate::floor_date(flights$FL_DATE - 1, "weeks") + 1
 
 # Define UI for application that makes the graphs
 ui <- fluidPage(
@@ -147,9 +145,11 @@ server <- function(input, output, session) {
          summarise(num_flights = n()) %>%
          ggplot(aes(x = WEEK, y = num_flights, group=UNIQUE_CARRIER, color=UNIQUE_CARRIER)) +
          geom_line() + 
-         labs(title='',
-              x='Week', y="Number of scheduled flights") +
-         vaporwave_theme
+         labs(title="ＦＬＩＧＨＴＳ  ＯＶＥＲ  ＴＩＭＥ　時間",
+              x='', y="Number of scheduled flights",
+              color = "ＣＡＲＲＩＥＲ") +
+         vaporwave_theme + 
+         theme(legend.key = element_rect(fill = "black"))
      })
      
      output$cancelledPlot <- renderPlot({ #Cancellation plot
@@ -157,7 +157,7 @@ server <- function(input, output, session) {
         summarise(pct_cancelled = mean(CANCELLED)) %>%
         ggplot(aes(x = UNIQUE_CARRIER, y = pct_cancelled)) +
          geom_bar(aes(fill = UNIQUE_CARRIER),stat = "identity") + 
-         labs(title="ＣＡＮＣＥＬＬＥＤ　ＦＬＩＧＨＴＳ",
+         labs(title="ＣＡＮＣＥＬＬＥＤ　ＦＬＩＧＨＴＳ 怒り",
               x="Carrier", y="Percent of flights cancelled") +
          scale_y_continuous(labels = scales::percent) +
          vaporwave_theme 
@@ -168,10 +168,12 @@ server <- function(input, output, session) {
          summarise(pct_cancelled = mean(CANCELLED)) %>%
          ggplot(aes(x = WEEK, y = pct_cancelled, group=UNIQUE_CARRIER, color=UNIQUE_CARRIER)) +
          geom_line() +
-         labs(title='',
-              x='Week', y="Percent of flights cancelled") +
+         labs(title="ＣＡＮＣＥＬＬＡＴＩＯＮＳ  ＯＶＥＲ  ＴＩＭＥ キャンセル",
+              x='', y="Percent of flights cancelled",
+              color = "ＣＡＲＲＩＥＲ") +
          scale_y_continuous(labels = scales::percent) +
-         vaporwave_theme
+         vaporwave_theme + 
+         theme(legend.key = element_rect(fill = "black"))
      })
 
      output$averageDepDelayPlot <- renderPlot({
