@@ -4,14 +4,14 @@
 
 #Packages
 library(install.load)
-install_load('shiny')
-install_load('tidyverse')
-install_load('here')
-if (!require(aesthetic)) {
-  install_load('devtools')
-  devtools::install_github("mackenziedg/aesthetic")
+library('shiny')
+library('tidyverse')
+library('here')
+#if (!require('aesthetic')) {
+  #install_load('devtools')
+  #devtools::install_github("mackenziedg/aesthetic")
   library(aesthetic)
-}
+#}
 
 
 #Data

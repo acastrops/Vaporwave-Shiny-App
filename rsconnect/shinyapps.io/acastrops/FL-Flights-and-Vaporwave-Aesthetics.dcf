@@ -5,8 +5,9 @@ account: acastrops
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 315762
-bundleId: 1302971
+bundleId: 1323915
 url: https://acastrops.shinyapps.io/FL-Flights-and-Vaporwave-Aesthetics/
-when: 1522895294.18299
+when: 1523991666.41593
 asMultiple: FALSE
 asStatic: FALSE
+ignoredFiles: README.md
